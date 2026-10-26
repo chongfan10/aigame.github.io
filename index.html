@@ -1,11 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <title>我的名片</title>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI制作游戏平台</title>
+    <!-- 引入外部 CSS 文件 -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-    <h1>你好，我是 你的名字</h1>
+<body class="bg-category">
 
+    <header>
+        <div class="window-controls">
+            <span></span><span></span><span></span>
+        </div>
+        <nav class="nav-links">
+            <a onclick="switchView('category-view', this)" class="active">分类</a>
+            <a onclick="switchView('ranking-view', this)">榜单</a>
+            <a onclick="switchView('collection-view', this)">合集</a>
+        </nav>
+    </header>
+
+    <main id="app">
+        
+        <section id="category-view" class="view-section active">
+            <div class="page-title-wrapper">
+                <div class="page-title">AI制作游戏分类</div>
+                <div class="page-subtitle">按类型探索AI参与创作的小游戏</div>
+            </div>
+            <div class="category-layout">
+                <aside class="sidebar"><ul id="category-list"></ul></aside>
+                <div class="game-grid" id="category-game-grid"></div>
+            </div>
+        </section>
+
+        <section id="ranking-view" class="view-section">
+            <div class="page-title-wrapper">
+                <div class="page-title">AI制作游戏榜单</div>
+                <div class="page-subtitle">由玩家点赞与拉踩共同决定</div>
+            </div>
+            <div class="ranking-tabs">
+                <div class="ranking-tab active" onclick="switchRankingTab('hot', this)">热门榜</div>
+                <div class="ranking-tab" onclick="switchRankingTab('new', this)">新品榜</div>
+                <div class="ranking-tab" onclick="switchRankingTab('reputation', this)">口碑榜</div>
+            </div>
+            <div class="ranking-container" id="ranking-game-grid"></div>
+        </section>
+
+        <section id="collection-view" class="view-section">
+            <div class="page-title-wrapper">
+                <div class="page-title">AI制游戏合集</div>
+                <div class="page-subtitle">发现由AI参与创作的独特小游戏</div>
+            </div>
+            <div class="game-grid" id="collection-game-grid" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));"></div>
+        </section>
+
+        <section id="detail-view" class="view-section">
+            <div class="page-title-wrapper">
+                <button class="back-btn" onclick="goBack()" style="margin: 0 auto 20px;">← 返回列表</button>
+            </div>
+            <div class="detail-container" id="detail-content"></div>
+        </section>
+
+    </main>
+
+    <!-- 引入外部 JS 文件 -->
+    <script src="js/script.js"></script>
 </body>
 </html>
