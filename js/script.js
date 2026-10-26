@@ -1,10 +1,9 @@
 // ================= 1. 数据配置中心 =================
-// 以后加新游戏就在这里加，注意 imgUrl 的路径要和图片名字对应
 const gamesData = [
     {
         id: 'game1', title: '迷雾侦探社', category: '剧情叙事', isNew: false,
         tags: [{ text: '剧情', class: 'purple' }, { text: '微恐', class: 'orange' }],
-        imgUrl: 'images/games/game1.jpg', // 替换成你的真实图片路径
+        imgUrl: 'images/games/game1.jpg', 
         likes: 0, dislikes: 0, 
         url: 'https://aigame.example.com/detective', desc: '这是一款沉浸式的悬疑解谜游戏...'
     },
@@ -22,7 +21,6 @@ const gamesData = [
         likes: 0, dislikes: 0, 
         url: 'https://aigame.example.com/mecha', desc: '休闲治愈的像素风游戏...'
     },
-    // 这里为了演示，后面几个我暂时用空白占位图代替，你自己换成真实图片
     {
         id: 'game4', title: '海风小镇前传', category: '剧情叙事', isNew: true,
         tags: [{ text: '治愈', class: 'purple' }, { text: '像素', class: 'orange' }],
@@ -84,7 +82,6 @@ function createCardHTML(game, isRanking = false, rankNum = '') {
                 <div class="game-card-title">${game.title}</div>
                 <div class="game-image-container">
                     <div class="game-tags">${tagsHTML}</div>
-                    <!-- 这里换成了真实的 img 标签 -->
                     <img src="${game.imgUrl}" alt="${game.title}">
                 </div>
             </div>
@@ -158,7 +155,9 @@ function renderCollectionPage() {
 }
 
 // ================= 3. 交互逻辑 =================
-function switchView(viewId, element) {
+
+// 修改了 switchView，增加了 scrollToTop 参数
+function switchView(viewId, element, scrollToTop = true) {
     document.querySelectorAll('.view-section').forEach(section => section.classList.remove('active'));
     
     if(element) {
@@ -177,7 +176,10 @@ function switchView(viewId, element) {
     if(viewId === 'ranking-view') {
         renderRankingPage();
     }
-    window.scrollTo(0, 0);
+    
+    if (scrollToTop) {
+        window.scrollTo(0, 0);
+    }
 }
 
 function handleVote(gameId, type, event) {
@@ -217,12 +219,23 @@ function updateUIVotes(gameId) {
         renderRankingPage(); 
     } else if (currentSection === 'collection-view') {
         renderCollectionPage();
+    } else if (currentSection === 'detail-view') {
+        // 在详情页点赞时，重新渲染详情页内容，但保持滚动条位置
+        const scrollY = window.scrollY;
+        openDetail(gameId, false);
+        window.scrollTo(0, scrollY);
     }
 }
 
-function openDetail(gameId) {
+// 修改了 openDetail，增加了 scrollToTop 参数，并将点赞/拉踩改成了可点击按钮
+function openDetail(gameId, scrollToTop = true) {
     const game = gamesData.find(g => g.id === gameId);
     if (!game) return;
+
+    // 获取当前点赞状态，用于显示高亮
+    const voteState = userVotedState[gameId] || '';
+    const likedClass = voteState === 'like' ? 'liked' : '';
+    const dislikedClass = voteState === 'dislike' ? 'disliked' : '';
 
     const detailContainer = document.getElementById('detail-content');
     
@@ -238,14 +251,22 @@ function openDetail(gameId) {
             <p class="detail-desc">${game.desc}</p>
             <div style="display: flex; gap: 20px; align-items: center;">
                 <a href="${game.url}" target="_blank" class="play-btn">🚀 开始游玩</a>
-                <div style="color: var(--text-secondary); font-weight: bold;">
-                    👍 ${game.likes} 人点赞 · 👎 ${game.dislikes} 人不喜欢
+                
+                <!-- 修复了这里的点赞/拉踩按钮 -->
+                <div class="game-stats" style="border: none; padding: 0; margin: 0;">
+                    <div class="stat-btn ${likedClass}" onclick="handleVote('${game.id}', 'like', event)">
+                        👍 <span>${game.likes}</span>
+                    </div>
+                    <div class="stat-btn ${dislikedClass}" onclick="handleVote('${game.id}', 'dislike', event)">
+                        👎 <span>${game.dislikes}</span>
+                    </div>
                 </div>
             </div>
         </div>
     `;
 
-    switchView('detail-view', null);
+    // 只在第一次点开详情页时滚到顶部，如果是点赞后重绘，就不滚动了
+    switchView('detail-view', null, scrollToTop);
 }
 
 function goBack() {
