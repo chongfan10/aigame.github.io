@@ -4,8 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI制作游戏平台</title>
+    
     <!-- 引入外部 CSS 文件 -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- 🌟 背景图预加载 🌟 -->
+    <link rel="preload" href="images/backgrounds/bg-category.png" as="image">
+    <link rel="preload" href="images/backgrounds/bg-ranking.png" as="image">
+    <link rel="preload" href="images/backgrounds/bg-collection.png" as="image">
 </head>
 <body class="bg-category">
 
@@ -22,6 +28,7 @@
 
     <main id="app">
         
+        <!-- 分类页 -->
         <section id="category-view" class="view-section active">
             <div class="page-title-wrapper">
                 <div class="page-title">AI制作游戏分类</div>
@@ -33,10 +40,11 @@
             </div>
         </section>
 
+        <!-- 榜单页 -->
         <section id="ranking-view" class="view-section">
             <div class="page-title-wrapper">
                 <div class="page-title">AI制作游戏榜单</div>
-                <div class="page-subtitle">由玩家点赞与拉踩共同决定</div>
+                <div class="page-subtitle">精选热门与最新上架游戏</div>
             </div>
             <div class="ranking-tabs">
                 <div class="ranking-tab active" onclick="switchRankingTab('hot', this)">热门榜</div>
@@ -46,19 +54,13 @@
             <div class="ranking-container" id="ranking-game-grid"></div>
         </section>
 
+        <!-- 合集页 -->
         <section id="collection-view" class="view-section">
             <div class="page-title-wrapper">
                 <div class="page-title">AI制游戏合集</div>
                 <div class="page-subtitle">发现由AI参与创作的独特小游戏</div>
             </div>
             <div class="game-grid" id="collection-game-grid" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));"></div>
-        </section>
-
-        <section id="detail-view" class="view-section">
-            <div class="page-title-wrapper">
-                <button class="back-btn" onclick="goBack()" style="margin: 0 auto 20px;">← 返回列表</button>
-            </div>
-            <div class="detail-container" id="detail-content"></div>
         </section>
 
     </main>
