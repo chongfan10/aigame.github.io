@@ -1,16 +1,12 @@
 /* ================= 基础变量和重置 ================= */
 :root {
-    --bg-color: #f6ede1;
-    --text-main: #3a2a1a;
-    --text-secondary: #6b5a4a;
-    --primary-gold: #eab45b;
-    --primary-gold-dark: #d49836;
-    --card-bg: #fffcf5;
-    --card-border: #e3d1bb;
-    --tag-purple: #8d5eb7;
-    --tag-blue: #3b82f6;
-    --tag-green: #6cb863;
-    --tag-orange: #f59e0b;
+    --bg-color: #ead8b9; 
+    --text-main: #4a341e; 
+    --text-secondary: #7e6346;
+    --primary-gold: #f3c763;
+    --primary-gold-dark: #c99844;
+    --card-bg: #f6ebd7; 
+    --card-border: #bda07a; 
 }
 
 * {
@@ -20,87 +16,42 @@
     font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
 }
 
-/* === 背景图控制 === */
 body {
     background-color: var(--bg-color);
+    background-image: 
+        radial-gradient(circle at 50% 0%, #fff4df 0%, transparent 70%),
+        url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#noiseFilter)" opacity="0.05"/></svg>');
     color: var(--text-main);
     min-height: 100vh;
     overflow-x: hidden;
-    
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center top;
-    background-attachment: fixed; 
-    transition: background-image 0.3s ease-in-out;
 }
 
-/* ⚠️ 注意这里的路径：../ 表示向上一级目录 */
-body.bg-category { background-image: url('../images/backgrounds/bg-category.png'); }
-body.bg-ranking { background-image: url('../images/backgrounds/bg-ranking.png'); }
-body.bg-collection { background-image: url('../images/backgrounds/bg-collection.png'); }
-
-/* ================= 顶部导航 ================= */
-header {
-    display: flex;
-    align-items: center;
-    padding: 20px 40px;
-    position: relative;
-    z-index: 10;
-}
-
-.window-controls {
-    display: flex;
-    gap: 8px;
-    position: absolute;
-    left: 40px;
-    top: 25px;
-}
-
-.window-controls span {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background-color: #ccc;
-}
-.window-controls span:nth-child(1) { background-color: #ff5f56; }
-.window-controls span:nth-child(2) { background-color: #ffbd2e; }
-.window-controls span:nth-child(3) { background-color: #27c93f; }
-
-.nav-links {
-    display: flex;
-    gap: 40px;
-    margin: 0 auto;
+/* 顶部导航 */
+.breadcrumbs {
+    text-align: center;
     font-size: 18px;
-    font-weight: bold;
     color: var(--text-secondary);
+    padding: 25px 0;
+    border-bottom: 1px dashed var(--card-border);
+    margin-bottom: 20px;
+    font-weight: bold;
 }
 
-.nav-links a {
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
-    padding-bottom: 5px;
-    position: relative;
-    transition: color 0.3s;
-}
-
-.nav-links a.active {
-    color: var(--text-main);
-}
-
-.nav-links a.active::after {
+.breadcrumbs span { margin: 0 15px; color: #d1b894; font-weight: normal; }
+.breadcrumbs a { text-decoration: none; color: var(--text-secondary); cursor: pointer; padding-bottom: 5px; position: relative; transition: all 0.3s; }
+.breadcrumbs a:hover { color: var(--text-main); }
+.breadcrumbs a.active { color: var(--text-main); font-size: 22px; }
+.breadcrumbs a.active::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 50%;
+    bottom: -5px; left: 50%;
     transform: translateX(-50%);
-    width: 30px;
-    height: 4px;
-    background-color: var(--primary-gold);
+    width: 100%; height: 4px;
+    background-color: var(--primary-gold-dark);
     border-radius: 2px;
 }
 
-/* ================= 主内容区 ================= */
+/* 主内容区 */
 #app {
     max-width: 1400px;
     margin: 0 auto;
@@ -109,264 +60,459 @@ header {
     z-index: 5;
 }
 
-.view-section {
-    display: none;
-    animation: fadeIn 0.4s ease-out;
-    min-height: calc(100vh - 80px);
-}
-
-.view-section.active {
-    display: block;
-}
+.view-section { display: none; animation: fadeIn 0.4s ease-out; }
+.view-section.active { display: block; }
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* 页面大标题 */
+/* 标题区域 */
 .page-title-wrapper {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
     margin-top: 20px;
-    background: radial-gradient(circle, rgba(246, 237, 225, 0.9) 0%, rgba(246, 237, 225, 0) 70%);
-    padding: 20px 0;
+    position: relative;
+}
+
+.page-title-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px; height: 100px;
+    background: #e8d2b0;
+    border: 2px solid #c9a87c;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    z-index: -1;
 }
 
 .page-title {
-    font-size: 56px;
+    font-size: 52px;
     font-weight: 900;
-    color: #f0d09a;
-    text-shadow: 
-        2px 2px 0px #b87d34,
-        -2px -2px 0px #b87d34,
-        2px -2px 0px #b87d34,
-        -2px 2px 0px #b87d34,
-        4px 6px 8px rgba(0,0,0,0.3);
+    color: #fce5b6;
+    text-shadow: -2px -2px 0px #d49c48, 2px -2px 0px #d49c48, -2px 2px 0px #d49c48, 2px 2px 0px #d49c48, 0px 6px 10px rgba(0,0,0,0.2);
     letter-spacing: 4px;
-    margin-bottom: 10px;
+    padding-top: 15px;
 }
 
 .page-subtitle {
-    font-size: 18px;
-    color: var(--text-secondary);
+    font-size: 16px;
+    color: var(--text-main);
     font-weight: bold;
-    text-shadow: 1px 1px 0px rgba(255,255,255,0.8);
+    padding-bottom: 15px;
 }
 
-/* ================= 分类页布局 ================= */
-.category-layout {
-    display: flex;
-    gap: 30px;
-}
+/* 布局 */
+.category-layout { display: flex; gap: 30px; }
 
 .sidebar {
     width: 220px;
     flex-shrink: 0;
-    background: rgba(255, 255, 255, 0.7);
+    background: var(--card-bg);
     border: 2px solid var(--card-border);
-    border-radius: 16px;
-    padding: 20px 0;
-    box-shadow: 2px 4px 12px rgba(0,0,0,0.05);
+    border-radius: 12px;
+    padding: 0;
     height: fit-content;
-    backdrop-filter: blur(5px);
+    box-shadow: 2px 4px 10px rgba(0,0,0,0.05);
 }
 
-.sidebar ul { list-style: none; }
+.sidebar-title {
+    padding: 15px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--text-secondary);
+    border-bottom: 1px dashed var(--card-border);
+}
+
+.sidebar ul { list-style: none; padding: 10px 0; }
 
 .sidebar li {
-    padding: 15px 25px;
-    font-size: 18px;
+    padding: 12px 20px;
+    font-size: 16px;
     font-weight: bold;
     color: var(--text-main);
     cursor: pointer;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 10px;
     transition: background 0.2s;
-}
-
-.sidebar li:hover { background: rgba(234, 180, 91, 0.1); }
-
-.sidebar li.active {
-    background: linear-gradient(90deg, #f4cd8a, #eab45b);
     margin: 0 10px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(212, 152, 54, 0.3);
-    padding: 15px 15px;
 }
 
-.sidebar li::after {
-    content: '◆';
-    font-size: 12px;
-    color: #d49836;
-    opacity: 0.5;
+.sidebar li:hover { background: #ebdcc2; }
+.sidebar li.active {
+    background: var(--primary-gold);
+    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.1);
+    color: #4a341e;
 }
-.sidebar li.active::after { opacity: 1; color: #8c5e1d;}
 
 /* 游戏卡片网格 */
-.game-grid {
+.game-grid, .ranking-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 25px;
-    flex-grow: 1;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    width: 100%;
 }
 
-/* ================= 游戏卡片通用样式 ================= */
+/* 档案风卡片 (游戏) */
 .game-card {
-    background: var(--card-bg);
-    border: 2px solid var(--card-border);
-    border-radius: 16px;
-    padding: 12px;
-    box-shadow: 4px 6px 15px rgba(0,0,0,0.08);
-    transition: transform 0.3s, box-shadow 0.3s;
+    background: #fdfaf4; 
+    border: 1px solid #c9a87c;
+    border-radius: 6px;
+    padding: 25px 20px;
+    position: relative;
+    box-shadow: 0 0 0 4px #ebdcc2, 0 8px 15px rgba(0,0,0,0.08);
     display: flex;
     flex-direction: column;
-    position: relative;
 }
 
-.game-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 6px 10px 20px rgba(0,0,0,0.12);
+.game-card::before {
+    content: '';
+    position: absolute;
+    top: 6px; left: 6px; right: 6px; bottom: 6px;
+    border: 1px dashed #d8bc98;
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+.game-card::after {
+    content: '';
+    position: absolute;
+    top: 12px; left: 12px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #fdfaf4;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.3), 0 0 0 1px #c9a87c;
+}
+
+.card-corner-tr, .card-corner-bl, .card-corner-br {
+    position: absolute;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #fdfaf4;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.3), 0 0 0 1px #c9a87c;
+    z-index: 2;
+}
+.card-corner-tr { top: 12px; right: 12px; }
+.card-corner-bl { bottom: 12px; left: 12px; }
+.card-corner-br { bottom: 12px; right: 12px; }
+
+.card-no {
+    position: absolute;
+    top: 15px; right: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #c9a87c;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 .game-card-title {
     text-align: center;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
-    margin-bottom: 12px;
-    color: #4a3b32;
+    margin-bottom: 20px;
+    color: #3e2a16;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e6d4b8;
+    position: relative;
+}
+
+.game-card-title::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 50%;
+    transform: translateX(-50%);
+    width: 40px; height: 2px;
+    background: #c9a87c;
 }
 
 .game-image-container {
     position: relative;
     width: 100%;
     aspect-ratio: 4/3;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 12px;
+    margin-bottom: 20px;
+    padding: 6px;
+    background: #fdfaf4;
+    border: 1px solid #d8bc98;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 4px;
 }
 
-/* 统一设置图片的填充方式 */
 .game-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 2px;
+    border: 1px solid #eee;
+}
+
+.game-tags {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    margin-bottom: 15px;
+    padding: 0 5px;
+}
+
+.tag {
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #6b4c2a;
+    font-weight: bold;
+    background: #f0e2cb;
+    border: 1px solid #d8bc98;
+}
+
+/* ================= 🚨 优化：热梗标签样式 ================= */
+.card-info {
+    font-size: 14px;
+    color: #5c452c;
+    margin-bottom: 25px;
+    padding: 12px 14px;
+    flex-grow: 1;
+    background: #f8f1e5;
+    border-radius: 6px;
+    border: 1px dashed #e0cbb0;
+}
+
+.card-info span { 
+    display: block; 
+    margin-bottom: 8px; 
+    line-height: 1.5;
+}
+.card-info span:last-child { 
+    margin-bottom: 0; 
+}
+
+.card-info .author-desc {
+    font-size: 13px;
+    color: #7e6346;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.platform-tag {
+    display: inline-block !important;
+    padding: 2px 6px;
+    font-size: 12px;
+    background-color: #ebdcc2;
+    color: #8c6b4a;
+    border-radius: 4px;
+    margin-left: 6px;
+    margin-bottom: 0 !important;
+    font-weight: normal;
+    border: 1px solid #d1b894;
+    vertical-align: text-bottom;
+}
+
+/* 热梗话题徽章 */
+.meme-hashtag {
+    display: inline-block;
+    background: #ffe3d8;
+    color: #b8522e;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    border: 1px dashed #b8522e;
+    margin-top: 5px;
+}
+/* ======================================================= */
+
+.author-link {
+    color: #4a341e; 
+    text-decoration: none; 
+    font-weight: bold;
+    transition: color 0.2s;
+}
+.author-link:hover {
+    color: #b8522e; 
+    text-decoration: underline; 
+}
+
+.card-play-btn {
+    display: block;
+    margin: 0 auto;
+    padding: 12px 0;
+    width: 85%;
+    background: linear-gradient(180deg, #fbe194 0%, #e2ad4c 100%);
+    color: #5a3d1c;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 900;
+    font-size: 16px;
+    border: 2px solid #b88233;
+    box-shadow: inset 0 2px 2px rgba(255,255,255,0.7), inset 0 -3px 5px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.1s, filter 0.2s;
+    cursor: pointer;
+}
+
+.card-play-btn:hover { filter: brightness(1.05); }
+.card-play-btn:active {
+    transform: translateY(2px);
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.rank-number {
+    position: absolute;
+    top: -15px; left: -15px;
+    font-size: 48px;
+    font-weight: 900;
+    color: #d49836;
+    text-shadow: 2px 2px 0 #fff, 4px 4px 8px rgba(0,0,0,0.1);
+    z-index: 10;
+    font-family: 'Times New Roman', serif;
+}
+
+.new-badge {
+    position: absolute;
+    top: -12px;
+    left: -12px;
+    background: linear-gradient(135deg, #ff5e5e, #d63031);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 900;
+    padding: 8px 16px;
+    border-radius: 8px;
+    box-shadow: 2px 4px 8px rgba(214, 48, 49, 0.4);
+    z-index: 10;
+    transform: rotate(-10deg);
+    letter-spacing: 1px;
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    border: 2px solid #ffeaa7;
+}
+
+/* ================= 执笔人档案馆专属样式 (UP卡片) ================= */
+.up-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 25px;
+    width: 100%;
+}
+
+.up-card {
+    background: #fdfaf4; 
+    border: 1px solid #c9a87c;
+    border-radius: 6px;
+    padding: 25px;
+    position: relative;
+    box-shadow: 0 0 0 4px #ebdcc2, 0 8px 15px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+}
+
+.up-card::before {
+    content: '';
+    position: absolute;
+    top: 6px; left: 6px; right: 6px; bottom: 6px;
+    border: 1px dashed #d8bc98;
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+.up-card::after {
+    content: '';
+    position: absolute;
+    top: 12px; left: 12px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #fdfaf4;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.3), 0 0 0 1px #c9a87c;
+}
+.up-card-corner-tr, .up-card-corner-bl, .up-card-corner-br {
+    position: absolute;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #fdfaf4;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.3), 0 0 0 1px #c9a87c;
+    z-index: 2;
+}
+.up-card-corner-tr { top: 12px; right: 12px; }
+.up-card-corner-bl { bottom: 12px; left: 12px; }
+.up-card-corner-br { bottom: 12px; right: 12px; }
+
+.up-card-top {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.up-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #d8bc98;
+    border: 3px solid #c9a87c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+    font-weight: bold;
+    color: #fff;
+    flex-shrink: 0;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.up-avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.game-tags {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    right: 10px;
-    display: flex;
-    justify-content: space-between;
-    z-index: 2;
+.up-info {
+    flex-grow: 1;
 }
 
-.tag {
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    color: #fff;
-    font-weight: bold;
-    border: 1px solid rgba(255,255,255,0.3);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-.tag.purple { background-color: var(--tag-purple); }
-.tag.blue { background-color: var(--tag-blue); }
-.tag.green { background-color: var(--tag-green); }
-.tag.orange { background-color: var(--tag-orange); }
-
-/* === 新增：卡片内的开始游玩按钮 === */
-.card-play-btn {
-    display: block;
-    margin: 5px auto 15px; /* 居中并留出上下间距 */
-    padding: 10px 30px;
-    background: linear-gradient(90deg, #f4cd8a, #eab45b);
-    color: #fff;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 25px;
-    font-weight: bold;
-    font-size: 16px;
-    box-shadow: 0 4px 8px rgba(212, 152, 54, 0.4);
-    transition: transform 0.2s, box-shadow 0.2s;
-    width: fit-content;
-}
-
-.card-play-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(212, 152, 54, 0.6);
-}
-
-.game-url {
-    font-size: 12px;
-    color: #a09080;
-    text-align: center;
-    word-break: break-all;
-    margin-top: auto; /* 让 URL 顶在最下面 */
-}
-
-/* ================= 榜单页样式 ================= */
-.ranking-tabs {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 30px;
-    background: rgba(255,255,255,0.7);
-    padding: 10px;
-    border-radius: 30px;
-    border: 2px solid var(--card-border);
-    backdrop-filter: blur(5px);
-}
-
-.ranking-tab {
-    flex: 1;
-    text-align: center;
-    padding: 12px 0;
+.up-name {
     font-size: 20px;
-    font-weight: bold;
-    color: var(--text-main);
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.ranking-tab.active {
-    background: linear-gradient(90deg, #f4cd8a, #eab45b);
-    box-shadow: 0 4px 8px rgba(212, 152, 54, 0.3);
-    color: #fff;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-}
-
-.ranking-container {
-    display: flex;
-    gap: 20px;
-    overflow-x: auto;
-    padding-bottom: 20px;
-}
-
-.ranking-card {
-    min-width: 260px;
-    flex: 1;
-    padding-top: 30px;
-}
-
-.rank-number {
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    font-size: 40px;
     font-weight: 900;
-    color: var(--primary-gold);
-    text-shadow: 2px 2px 0 #fff, 4px 4px 8px rgba(0,0,0,0.2);
-    z-index: 10;
-    transform: rotate(-10deg);
+    color: #3e2a16;
+    margin-bottom: 8px;
 }
 
-/* 滚动条美化 */
+.up-name-link {
+    color: #3e2a16;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.up-name-link:hover {
+    color: #b8522e;
+    text-decoration: underline;
+}
+
+.up-desc {
+    font-size: 14px;
+    color: #7e6346;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.up-stat {
+    font-size: 14px;
+    color: #c99844;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.up-card .card-play-btn {
+    width: 100%;
+    margin-top: auto;
+}
+
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: var(--primary-gold); }
+::-webkit-scrollbar-thumb { background: #d8bc98; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #c9a87c; }

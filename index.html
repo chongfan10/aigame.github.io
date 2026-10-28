@@ -3,69 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI制作游戏平台</title>
-    
-    <!-- 引入外部 CSS 文件 -->
+    <title>AI制作游戏平台 - 档案库</title>
     <link rel="stylesheet" href="css/style.css">
-
-    <!-- 🌟 背景图预加载 🌟 -->
-    <link rel="preload" href="images/backgrounds/bg-category.png" as="image">
-    <link rel="preload" href="images/backgrounds/bg-ranking.png" as="image">
-    <link rel="preload" href="images/backgrounds/bg-collection.png" as="image">
 </head>
-<body class="bg-category">
+<body>
 
-    <header>
-        <div class="window-controls">
-            <span></span><span></span><span></span>
-        </div>
-        <nav class="nav-links">
-            <a onclick="switchView('category-view', this)" class="active">分类</a>
-            <a onclick="switchView('ranking-view', this)">榜单</a>
-            <a onclick="switchView('collection-view', this)">合集</a>
-        </nav>
-    </header>
+    <!-- 顶部导航 -->
+    <div class="breadcrumbs">
+        <a onclick="switchView('category-view', this)" class="active">首页</a> 
+        <span>/</span> 
+        <a onclick="switchView('ranking-view', this)">热梗游戏</a> 
+        <span>/</span> 
+        <a onclick="switchView('collection-view', this)">往期编年</a>
+    </div>
 
     <main id="app">
         
-        <!-- 分类页 -->
+        <!-- 视图1：首页 -->
         <section id="category-view" class="view-section active">
             <div class="page-title-wrapper">
-                <div class="page-title">AI制作游戏分类</div>
-                <div class="page-subtitle">按类型探索AI参与创作的小游戏</div>
+                <div class="page-title">热梗AI游戏库</div>
+                <div class="page-subtitle">探索AI参与创作的小游戏</div>
             </div>
-            <div class="category-layout">
-                <aside class="sidebar"><ul id="category-list"></ul></aside>
-                <div class="game-grid" id="category-game-grid"></div>
-            </div>
+            <div class="game-grid" id="category-game-grid"></div>
         </section>
 
-        <!-- 榜单页 -->
+        <!-- 视图2：热梗游戏页 -->
         <section id="ranking-view" class="view-section">
             <div class="page-title-wrapper">
-                <div class="page-title">AI制作游戏榜单</div>
-                <div class="page-subtitle">精选热门与最新上架游戏</div>
+                <div class="page-title">热梗游戏分场</div>
+                <div class="page-subtitle">今日热搜，明日史书</div>
             </div>
-            <div class="ranking-tabs">
-                <div class="ranking-tab active" onclick="switchRankingTab('hot', this)">热门榜</div>
-                <div class="ranking-tab" onclick="switchRankingTab('new', this)">新品榜</div>
-                <div class="ranking-tab" onclick="switchRankingTab('reputation', this)">口碑榜</div>
+            
+            <div class="category-layout">
+                <aside class="sidebar">
+                    <div class="sidebar-title">分类系列</div>
+                    <ul id="ranking-category-list"></ul>
+                </aside>
+                
+                <div style="flex-grow: 1; min-width: 0;">
+                    <div class="ranking-container" id="ranking-game-grid"></div>
+                </div>
             </div>
-            <div class="ranking-container" id="ranking-game-grid"></div>
         </section>
 
-        <!-- 合集页 -->
+        <!-- 视图3：执笔人档案馆 (已改为左右布局) -->
         <section id="collection-view" class="view-section">
             <div class="page-title-wrapper">
-                <div class="page-title">AI制游戏合集</div>
-                <div class="page-subtitle">发现由AI参与创作的独特小游戏</div>
+                <div class="page-title">执笔人档案馆</div>
+                <div class="page-subtitle">那些创造热梗历史的UP主们</div>
             </div>
-            <div class="game-grid" id="collection-game-grid" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));"></div>
+            
+            <div class="category-layout">
+                <aside class="sidebar">
+                    <div class="sidebar-title">UP主系列</div>
+                    <ul id="up-category-list"></ul>
+                </aside>
+                
+                <div style="flex-grow: 1; min-width: 0;">
+                    <!-- 容器ID改为 collection-up-grid -->
+                    <div class="up-grid" id="collection-up-grid"></div>
+                </div>
+            </div>
         </section>
 
     </main>
 
-    <!-- 引入外部 JS 文件 -->
     <script src="js/script.js"></script>
 </body>
 </html>
