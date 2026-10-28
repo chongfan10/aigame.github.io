@@ -1,6 +1,6 @@
 /* 
 =============================================================================
-【🚨 新增游戏模板区（此区域在网页上不会显示，请放心填写）】
+【🚨 新增游戏模板区】
 =============================================================================
     {
         id: 'game9', 
@@ -9,15 +9,16 @@
         isNew: true, 
         isUpdated: false,
         tags: [{ text: '解谜' }, { text: '像素' }],
-        imgUrl: 'images/games/game9.jpg', 
+        imgUrl: 'images/games/game9.webp', 
         url: 'https://你的游戏链接.com',
         author: '你的名字',
         authorUrl: 'https://space.bilibili.com/你的UID', 
-        authorAvatar: 'images/authors/avatar9.jpg', 
+        authorAvatar: 'images/authors/avatar9.webp', 
         authorPlatform: 'B站', 
         authorInfo: '这里是作者的简短介绍。',
         version: 'v1', 
-        memeEvent: '这里填关联的热梗事件'
+        // 🚨 这里改成数组形式，支持多个热梗
+        memeEvent: ['热梗1', '热梗2', '热梗3'] 
     }
 =============================================================================
 */
@@ -25,43 +26,44 @@
 // ================= 1. 游戏数据配置中心 =================
 const gamesData = [
     {
-        id: 'game1', title: '迷雾侦探社', category: '社会热点', isNew: true, isUpdated: false,
-        tags: [{ text: '剧情' }, { text: '微恐' }],
-        imgUrl: 'images/games/game1.jpg', 
-        url: 'https://aigame.example.com/detective',
-        author: '张三',
-        authorUrl: 'https://space.bilibili.com/123456', 
-        authorAvatar: 'images/authors/avatar1.jpg',
+        id: 'game1', title: '虚拟币模拟交易软件', category: '抽象整活', isNew: false, isUpdated: false,
+        tags: [{ text: '经营' }, { text: '益智' }],
+        imgUrl: 'images/games/game1.webp', 
+        url: 'https://www.bilibili.com/toy/IjaLS8zTiK58TTNZ/index.html',
+        author: '-会飞的蝈蝈-',
+        authorUrl: 'https://space.bilibili.com/443211651?spm_id_from=333.788.upinfo.detail.click', 
+        authorAvatar: 'images/authors/avatar1.webp',
         authorPlatform: 'B站',
-        authorInfo: '专注悬疑解谜的独立开发者，擅长AI互动叙事。',
-        version: 'v1', 
-        memeEvent: '消失的胡鑫宇案'
+        authorInfo: '', 
+        version: 'v3', 
+        memeEvent: ['10月新番《FX战士久留美》', '虚拟币爆仓', '赛博外汇炒股'] 
     },
     {
-        id: 'game2', title: '海风小镇', category: '抽象整活', isNew: false, isUpdated: true,
-        tags: [{ text: '解谜' }, { text: '多人' }],
-        imgUrl: 'images/games/game2.jpg', 
-        url: 'https://aigame.example.com/seawind',
-        author: '李四',
-        authorUrl: 'https://www.douyin.com/user/654321',
-        authorAvatar: 'images/authors/avatar2.jpg',
-        authorPlatform: '抖音',
-        authorInfo: '海风游戏工作室主理人。',
+        id: 'game2', title: '十七步麻将', category: '抽象整活', isNew: false, isUpdated: false,
+        tags: [{ text: '经营' }, { text: '益智' }],
+        imgUrl: 'images/games/game2.webp', 
+        url: 'https://www.bilibili.com/toy/seventeen-steps/index.html',
+        author: '-会飞的蝈蝈-',
+        authorUrl: 'https://space.bilibili.com/443211651?spm_id_from=333.788.upinfo.detail.click', 
+        authorAvatar: 'images/authors/avatar1.webp',
+        authorPlatform: 'B站',
+        authorInfo: '仿照赌博堕天录中 开司和社长玩的十七步麻将', 
         version: 'v1', 
-        memeEvent: '淄博烧烤爆火事件'
+        memeEvent: ['赌博堕天录']
     },
     {
-        id: 'game3', title: '机械迷城', category: '抽象整活', isNew: false, isUpdated: false,
-        tags: [{ text: '治愈' }, { text: '像素' }],
-        imgUrl: 'images/games/game3.jpg', 
-        url: 'https://aigame.example.com/mecha',
-        author: '王五',
-        authorUrl: '',
-        authorAvatar: 'images/authors/avatar3.jpg',
-        authorPlatform: '微博',
-        authorInfo: '像素美术狂热爱好者。',
+        id: 'game3', title: '方块K:美人投票', category: '抽象整活', isNew: true, isUpdated: false,
+        tags: [{ text: '经营' }, { text: '益智' }],
+        imgUrl: 'images/games/game3.webp', 
+        url: 'https://www.bilibili.com/toy/diamond-k/index.html',
+        author: '-会飞的蝈蝈-',
+        // ✅ 修复了这里多余的单引号
+        authorUrl: 'https://space.bilibili.com/443211651?spm_id_from=333.788.upinfo.detail.click',
+        authorAvatar: 'images/authors/avatar1.webp',
+        authorPlatform: 'B站',
+        authorInfo: '弥留之国的爱丽丝中的游戏，方块K:美人投票',
         version: 'v1',
-        memeEvent: 'ChatGPT引爆AI热潮'
+        memeEvent: ['方块K:美人投票', '弥留之国的爱丽丝']
     }
 ];
 
@@ -94,6 +96,17 @@ function createCardHTML(game, isRanking = false, rankNum = '', displayIndex = 1)
     const authorHTML = createSafeLink(`@${game.author}`, game.authorUrl, 'author-link');
     const platformTag = game.authorPlatform ? `<span class="platform-tag">${game.authorPlatform}</span>` : '';
 
+    // 🚨 兼容处理：无论 memeEvent 是字符串还是数组，都能正确遍历
+    let memes = [];
+    if (Array.isArray(game.memeEvent)) {
+        memes = game.memeEvent;
+    } else if (typeof game.memeEvent === 'string') {
+        memes = [game.memeEvent]; // 如果填的是单个字符串，转成数组
+    }
+    
+    // 生成多个热梗标签的 HTML
+    const memeTagsHTML = memes.map(m => `<span class="meme-hashtag"># ${m} #</span>`).join('');
+
     return `
         <div class="game-card ${isRanking ? 'ranking-card' : ''}">
             <div class="card-corner-tr"></div>
@@ -118,7 +131,7 @@ function createCardHTML(game, isRanking = false, rankNum = '', displayIndex = 1)
                 </div>
                 <div class="info-row" style="flex-direction: column;">
                     <span class="info-label">💬 作者信息：</span>
-                    <span class="author-desc">${game.authorInfo || '暂无介绍'}</span>
+                    <span class="author-desc">${game.authorInfo || '该执笔人很神秘，未留下任何档案...'}</span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">🏷️ 游戏版本：</span>
@@ -126,7 +139,8 @@ function createCardHTML(game, isRanking = false, rankNum = '', displayIndex = 1)
                 </div>
                 <div class="info-row meme-box" style="flex-direction: column;">
                     <span class="info-label">🔥 关联热梗：</span>
-                    <span class="meme-hashtag"># ${game.memeEvent} #</span>
+                    <!-- 这里渲染多个标签 -->
+                    <div class="meme-list">${memeTagsHTML}</div>
                 </div>
             </div>
             
@@ -154,7 +168,7 @@ function createUpCardHTML(up) {
                 <div class="up-avatar">${avatarContent}</div>
                 <div class="up-info">
                     <div class="up-name">执笔人档案：${upNameHTML} ${platformTag}</div>
-                    <div class="up-desc">${up.desc || '暂无简介'}</div>
+                    <div class="up-desc">${up.desc || '该执笔人很神秘，未留下任何档案...'}</div>
                     <div class="up-stat">💎 已收录：${up.gameCount} 款游戏</div>
                 </div>
             </div>
