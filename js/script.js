@@ -1,6 +1,6 @@
 /* 
 =============================================================================
-【🚨 新增游戏模板区】
+【🚨 新增游戏模板区（此区域在网页上不会显示，请放心填写）】
 =============================================================================
     {
         id: 'game9', 
@@ -56,7 +56,7 @@ const gamesData = [
         imgUrl: 'images/games/game3.jpg', 
         url: 'https://aigame.example.com/mecha',
         author: '王五',
-        authorUrl: '', // 测试没有链接的情况
+        authorUrl: '',
         authorAvatar: 'images/authors/avatar3.jpg',
         authorPlatform: '微博',
         authorInfo: '像素美术狂热爱好者。',
@@ -68,9 +68,10 @@ const gamesData = [
 let currentRankingCategory = '全部热梗';
 let currentUpCategory = '全部UP主';
 
+const imgFallback = "this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'%3E%3Crect width=\'100%\' height=\'100%\' fill=\'%23ebdcc2\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'16\' text-anchor=\'middle\' fill=\'%237e6346\' dy=\'.3em\'%3E暂无图片%3C/text%3E%3C/svg%3E'";
+
 // ================= 2. 核心渲染函数 =================
 
-// 辅助函数：生成安全链接（防止 href="#" 导致页面跳回顶部）
 function createSafeLink(text, url, className) {
     if (url && url.trim() !== '') {
         return `<a href="${url}" target="_blank" class="${className}">${text}</a>`;
@@ -79,7 +80,6 @@ function createSafeLink(text, url, className) {
     }
 }
 
-// --- 游戏卡片生成 ---
 function createCardHTML(game, isRanking = false, rankNum = '', displayIndex = 1) {
     const tagsHTML = game.tags.map(tag => `<span class="tag">${tag.text}</span>`).join('');
     const archiveNo = String(displayIndex).padStart(3, '0');
@@ -103,16 +103,31 @@ function createCardHTML(game, isRanking = false, rankNum = '', displayIndex = 1)
             <div class="card-no">NO.${archiveNo}</div>
             <div class="game-card-title">${game.title}</div>
             <div class="game-image-container">
-                <img src="${game.imgUrl}" alt="${game.title}" loading="lazy">
+                <img src="${game.imgUrl}" alt="${game.title}" loading="lazy" onerror="${imgFallback}">
             </div>
             <div class="game-tags">${tagsHTML}</div>
             
             <div class="card-info">
-                <span>📂 所属分类：<strong style="color:#b8522e;">${game.category}</strong></span>
-                <span>✍️ 游戏作者：${authorHTML} ${platformTag}</span>
-                <span class="author-desc">💬 作者信息：${game.authorInfo || '暂无介绍'}</span>
-                <span>🏷️ 游戏版本：<strong style="color:#c99844;">${game.version}</strong></span>
-                <div style="margin-top: 8px;">🔥 关联热梗：<br><span class="meme-hashtag"># ${game.memeEvent} #</span></div>
+                <div class="info-row">
+                    <span class="info-label">📂 所属分类：</span>
+                    <span class="info-value">${game.category}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">✍️ 游戏作者：</span>
+                    <span>${authorHTML}</span> ${platformTag}
+                </div>
+                <div class="info-row" style="flex-direction: column;">
+                    <span class="info-label">💬 作者信息：</span>
+                    <span class="author-desc">${game.authorInfo || '暂无介绍'}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">🏷️ 游戏版本：</span>
+                    <strong style="color:#c99844;">${game.version}</strong>
+                </div>
+                <div class="info-row meme-box" style="flex-direction: column;">
+                    <span class="info-label">🔥 关联热梗：</span>
+                    <span class="meme-hashtag"># ${game.memeEvent} #</span>
+                </div>
             </div>
             
             <a href="${game.url}" target="_blank" class="card-play-btn">开始游玩</a>
@@ -120,11 +135,10 @@ function createCardHTML(game, isRanking = false, rankNum = '', displayIndex = 1)
     `;
 }
 
-// --- UP主卡片生成 ---
 function createUpCardHTML(up) {
     const avatarText = up.name.charAt(0);
     const avatarContent = up.avatar 
-        ? `<img src="${up.avatar}" alt="${up.name}" loading="lazy">` 
+        ? `<img src="${up.avatar}" alt="${up.name}" loading="lazy" onerror="${imgFallback}">` 
         : avatarText;
         
     const platformTag = up.platform ? `<span class="platform-tag">${up.platform}</span>` : '';
@@ -152,13 +166,15 @@ function createUpCardHTML(up) {
 
 // ================= 3. 页面渲染逻辑 =================
 
-// 首页
 function renderCategoryPage() {
     const gameGrid = document.getElementById('category-game-grid');
+    if (gamesData.length === 0) {
+        gameGrid.innerHTML = `<div class="empty-state">暂无收录，敬请期待~</div>`;
+        return;
+    }
     gameGrid.innerHTML = gamesData.map((g, index) => createCardHTML(g, false, '', index + 1)).join('');
 }
 
-// 热梗页
 function renderRankingSidebar() {
     const categories = ['全部热梗', '社会热点', '抽象整活'];
     const rankingCategoryList = document.getElementById('ranking-category-list');
@@ -187,20 +203,22 @@ function renderRankingPage() {
         displayList = displayList.filter(g => g.category === currentRankingCategory);
     }
 
+    if (displayList.length === 0) {
+        gameGrid.innerHTML = `<div class="empty-state">该分类下暂无游戏，敬请期待~</div>`;
+        return;
+    }
+
     gameGrid.innerHTML = displayList.map((g, index) => {
         const rankNum = String(index + 1).padStart(2, '0'); 
         return createCardHTML(g, true, rankNum, index + 1);
     }).join('');
 }
 
-// ================= 🚨 核心：自动生成UP主逻辑 =================
-
 function generateUpData() {
     const upMap = {};
     
     gamesData.forEach(game => {
         if (!upMap[game.author]) {
-            // 第一次遇到该作者
             upMap[game.author] = {
                 name: game.author,
                 desc: game.authorInfo,
@@ -211,27 +229,16 @@ function generateUpData() {
                 category: '传统手艺人' 
             };
         } else {
-            // 已经存在，数量+1
             upMap[game.author].gameCount += 1;
-            
-            // 逻辑优化：如果之前的记录里没有头像或链接，但新游戏填了，就补全它
-            if (!upMap[game.author].avatar && game.authorAvatar) {
-                upMap[game.author].avatar = game.authorAvatar;
-            }
-            if (!upMap[game.author].url && game.authorUrl) {
-                upMap[game.author].url = game.authorUrl;
-            }
-
-            if (upMap[game.author].gameCount >= 2) {
-                upMap[game.author].category = '高产肝帝';
-            }
+            if (!upMap[game.author].avatar && game.authorAvatar) upMap[game.author].avatar = game.authorAvatar;
+            if (!upMap[game.author].url && game.authorUrl) upMap[game.author].url = game.authorUrl;
+            if (upMap[game.author].gameCount >= 2) upMap[game.author].category = '高产肝帝';
         }
     });
 
     return Object.values(upMap);
 }
 
-// 档案馆页
 function renderUpSidebar() {
     const categories = ['全部UP主', '高产肝帝', '传统手艺人'];
     const upCategoryList = document.getElementById('up-category-list');
@@ -260,6 +267,11 @@ function renderCollectionPage() {
         allUps = allUps.filter(u => u.category === currentUpCategory);
     }
 
+    if (allUps.length === 0) {
+        upGrid.innerHTML = `<div class="empty-state">该系列下暂无作者，敬请期待~</div>`;
+        return;
+    }
+
     upGrid.innerHTML = allUps.map(u => createUpCardHTML(u)).join('');
 }
 
@@ -275,7 +287,6 @@ function switchView(viewId, element) {
     
     document.getElementById(viewId).classList.add('active');
     
-    // 更新 URL Hash，防止刷新丢失状态
     if (viewId === 'category-view') window.location.hash = 'home';
     if (viewId === 'ranking-view') window.location.hash = 'trending';
     if (viewId === 'collection-view') window.location.hash = 'archive';
@@ -297,12 +308,9 @@ function switchView(viewId, element) {
     window.scrollTo(0, 0);
 }
 
-// ================= 5. 初始化 =================
 window.onload = () => {
-    // 先渲染首页，保证基础结构存在
     renderCategoryPage();
     
-    // 读取 URL 中的 Hash，恢复上次浏览的页面
     const hash = window.location.hash.replace('#', '');
     const navLinks = document.querySelectorAll('.breadcrumbs a');
     
@@ -311,7 +319,6 @@ window.onload = () => {
     } else if (hash === 'archive') {
         switchView('collection-view', navLinks[2]);
     } else {
-        // 默认首页
         window.location.hash = 'home';
     }
 };

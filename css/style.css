@@ -23,7 +23,19 @@ body {
         url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#noiseFilter)" opacity="0.05"/></svg>');
     color: var(--text-main);
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     overflow-x: hidden;
+}
+
+#app {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 30px 60px;
+    position: relative;
+    z-index: 5;
+    flex: 1;
+    width: 100%;
 }
 
 /* 顶部导航 */
@@ -51,15 +63,6 @@ body {
     border-radius: 2px;
 }
 
-/* 主内容区 */
-#app {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 40px 60px;
-    position: relative;
-    z-index: 5;
-}
-
 .view-section { display: none; animation: fadeIn 0.4s ease-out; }
 .view-section.active { display: block; }
 
@@ -71,7 +74,7 @@ body {
 /* 标题区域 */
 .page-title-wrapper {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
     margin-top: 20px;
     position: relative;
 }
@@ -105,11 +108,11 @@ body {
     padding-bottom: 15px;
 }
 
-/* 布局 */
-.category-layout { display: flex; gap: 30px; }
+/* 布局 (PC端) */
+.category-layout { display: flex; gap: 25px; }
 
 .sidebar {
-    width: 220px;
+    width: 200px;
     flex-shrink: 0;
     background: var(--card-bg);
     border: 2px solid var(--card-border);
@@ -150,11 +153,12 @@ body {
     color: #4a341e;
 }
 
-/* 游戏卡片网格 */
+/* ================= 🚨 游戏卡片网格 (PC端) ================= */
+/* 核心改动：最小宽度改为 260px，间距 20px。确保一屏能放 4 个 */
 .game-grid, .ranking-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
     width: 100%;
 }
 
@@ -163,11 +167,17 @@ body {
     background: #fdfaf4; 
     border: 1px solid #c9a87c;
     border-radius: 6px;
-    padding: 25px 20px;
+    padding: 20px 15px; /* 略微缩小内边距 */
     position: relative;
-    box-shadow: 0 0 0 4px #ebdcc2, 0 8px 15px rgba(0,0,0,0.08);
+    box-shadow: 0 0 0 4px #ebdcc2, 0 6px 12px rgba(0,0,0,0.08);
     display: flex;
     flex-direction: column;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 0 4px #ebdcc2, 0 12px 20px rgba(0,0,0,0.15);
 }
 
 .game-card::before {
@@ -203,8 +213,8 @@ body {
 
 .card-no {
     position: absolute;
-    top: 15px; right: 30px;
-    font-size: 14px;
+    top: 15px; right: 25px;
+    font-size: 13px;
     font-weight: bold;
     color: #c9a87c;
     font-family: 'Courier New', Courier, monospace;
@@ -212,9 +222,9 @@ body {
 
 .game-card-title {
     text-align: center;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     color: #3e2a16;
     padding-bottom: 10px;
     border-bottom: 1px solid #e6d4b8;
@@ -230,12 +240,13 @@ body {
     background: #c9a87c;
 }
 
+/* 图片容器，固定比例防撑大 */
 .game-image-container {
     position: relative;
     width: 100%;
     aspect-ratio: 4/3;
-    margin-bottom: 20px;
-    padding: 6px;
+    margin-bottom: 15px;
+    padding: 5px;
     background: #fdfaf4;
     border: 1px solid #d8bc98;
     box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
@@ -252,103 +263,118 @@ body {
 
 .game-tags {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     justify-content: flex-start;
-    margin-bottom: 15px;
-    padding: 0 5px;
+    margin-bottom: 12px;
+    padding: 0;
+    flex-wrap: wrap; /* 允许换行 */
 }
 
 .tag {
-    padding: 4px 12px;
+    padding: 3px 10px;
     border-radius: 4px;
-    font-size: 13px;
+    font-size: 12px;
     color: #6b4c2a;
     font-weight: bold;
-    background: #f0e2cb;
+    background: #f5ebd9;
     border: 1px solid #d8bc98;
 }
 
-/* ================= 🚨 优化：热梗标签样式 ================= */
+/* ================= 档案信息区域 ================= */
 .card-info {
-    font-size: 14px;
+    font-size: 13px;
     color: #5c452c;
-    margin-bottom: 25px;
-    padding: 12px 14px;
+    margin-bottom: 20px;
+    padding: 12px;
     flex-grow: 1;
     background: #f8f1e5;
     border-radius: 6px;
     border: 1px dashed #e0cbb0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* 控制行间距 */
 }
 
-.card-info span { 
-    display: block; 
-    margin-bottom: 8px; 
-    line-height: 1.5;
-}
-.card-info span:last-child { 
-    margin-bottom: 0; 
+.card-info .info-row {
+    display: flex;
+    align-items: flex-start;
+    line-height: 1.4;
 }
 
+.card-info .info-row .info-label {
+    white-space: nowrap;
+    margin-right: 4px;
+    color: #7e6346; 
+}
+
+.card-info .info-row .info-value {
+    color: #b8522e;
+    font-weight: bold;
+}
+
+/* 作者信息截断 */
 .card-info .author-desc {
-    font-size: 13px;
+    font-size: 12px;
     color: #7e6346;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    margin-top: 2px;
 }
 
+/* 平台小标签 */
 .platform-tag {
-    display: inline-block !important;
-    padding: 2px 6px;
-    font-size: 12px;
+    display: inline-block;
+    padding: 1px 6px;
+    font-size: 11px;
     background-color: #ebdcc2;
     color: #8c6b4a;
     border-radius: 4px;
-    margin-left: 6px;
-    margin-bottom: 0 !important;
+    margin-left: 5px;
     font-weight: normal;
     border: 1px solid #d1b894;
-    vertical-align: text-bottom;
+    vertical-align: middle;
 }
 
 /* 热梗话题徽章 */
+.meme-box {
+    margin-top: 2px;
+}
 .meme-hashtag {
     display: inline-block;
-    background: #ffe3d8;
-    color: #b8522e;
+    background: #ffe8e0;
+    color: #d63031;
     padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 13px;
+    border-radius: 4px;
+    font-size: 12px;
     font-weight: bold;
-    border: 1px dashed #b8522e;
-    margin-top: 5px;
+    border: 1px dashed #ff9f9f;
+    word-break: break-all; /* 防止长单词撑破 */
 }
-/* ======================================================= */
 
-.author-link {
+.author-link, .up-name-link {
     color: #4a341e; 
     text-decoration: none; 
     font-weight: bold;
     transition: color 0.2s;
 }
-.author-link:hover {
-    color: #b8522e; 
-    text-decoration: underline; 
-}
+a.author-link:hover, a.up-name-link:hover { color: #b8522e; text-decoration: underline; }
+span.author-link, span.up-name-link { cursor: default; }
 
+/* 开始游玩按钮 */
 .card-play-btn {
     display: block;
     margin: 0 auto;
     padding: 12px 0;
-    width: 85%;
+    width: 90%; 
     background: linear-gradient(180deg, #fbe194 0%, #e2ad4c 100%);
     color: #5a3d1c;
     text-align: center;
     text-decoration: none;
     border-radius: 30px;
     font-weight: 900;
-    font-size: 16px;
+    font-size: 15px;
     border: 2px solid #b88233;
     box-shadow: inset 0 2px 2px rgba(255,255,255,0.7), inset 0 -3px 5px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.1);
     transition: transform 0.1s, filter 0.2s;
@@ -356,15 +382,12 @@ body {
 }
 
 .card-play-btn:hover { filter: brightness(1.05); }
-.card-play-btn:active {
-    transform: translateY(2px);
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
-}
+.card-play-btn:active { transform: translateY(2px); box-shadow: inset 0 2px 5px rgba(0,0,0,0.2); }
 
 .rank-number {
     position: absolute;
     top: -15px; left: -15px;
-    font-size: 48px;
+    font-size: 42px;
     font-weight: 900;
     color: #d49836;
     text-shadow: 2px 2px 0 #fff, 4px 4px 8px rgba(0,0,0,0.1);
@@ -374,14 +397,14 @@ body {
 
 .new-badge {
     position: absolute;
-    top: -12px;
-    left: -12px;
+    top: -10px;
+    left: -10px;
     background: linear-gradient(135deg, #ff5e5e, #d63031);
     color: #fff;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 900;
-    padding: 8px 16px;
-    border-radius: 8px;
+    padding: 6px 12px;
+    border-radius: 6px;
     box-shadow: 2px 4px 8px rgba(214, 48, 49, 0.4);
     z-index: 10;
     transform: rotate(-10deg);
@@ -390,11 +413,11 @@ body {
     border: 2px solid #ffeaa7;
 }
 
-/* ================= 执笔人档案馆专属样式 (UP卡片) ================= */
+/* 执笔人档案馆专属样式 (UP卡片) */
 .up-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
     width: 100%;
 }
 
@@ -402,12 +425,15 @@ body {
     background: #fdfaf4; 
     border: 1px solid #c9a87c;
     border-radius: 6px;
-    padding: 25px;
+    padding: 20px;
     position: relative;
     box-shadow: 0 0 0 4px #ebdcc2, 0 8px 15px rgba(0,0,0,0.08);
     display: flex;
     flex-direction: column;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
+
+.up-card:hover { transform: translateY(-5px); box-shadow: 0 0 0 4px #ebdcc2, 0 12px 20px rgba(0,0,0,0.15); }
 
 .up-card::before {
     content: '';
@@ -439,79 +465,108 @@ body {
 .up-card-corner-bl { bottom: 12px; left: 12px; }
 .up-card-corner-br { bottom: 12px; right: 12px; }
 
-.up-card-top {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-    margin-bottom: 20px;
-}
+.up-card-top { display: flex; gap: 15px; align-items: center; margin-bottom: 15px; }
 
 .up-avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: #d8bc98;
-    border: 3px solid #c9a87c;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 36px;
-    font-weight: bold;
-    color: #fff;
-    flex-shrink: 0;
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
-    overflow: hidden;
+    width: 70px; height: 70px; border-radius: 50%; background: #d8bc98;
+    border: 3px solid #c9a87c; display: flex; justify-content: center; align-items: center;
+    font-size: 32px; font-weight: bold; color: #fff; flex-shrink: 0;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.1); overflow: hidden;
 }
 
-.up-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+.up-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-.up-info {
-    flex-grow: 1;
-}
+.up-info { flex-grow: 1; }
 
-.up-name {
-    font-size: 20px;
-    font-weight: 900;
-    color: #3e2a16;
-    margin-bottom: 8px;
-}
-
-.up-name-link {
-    color: #3e2a16;
-    text-decoration: none;
-    transition: color 0.2s;
-}
-.up-name-link:hover {
-    color: #b8522e;
-    text-decoration: underline;
-}
+.up-name { font-size: 18px; font-weight: 900; color: #3e2a16; margin-bottom: 5px; }
 
 .up-desc {
-    font-size: 14px;
-    color: #7e6346;
-    line-height: 1.5;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    font-size: 13px; color: #7e6346; line-height: 1.5;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
 
-.up-stat {
-    font-size: 14px;
-    color: #c99844;
+.up-stat { font-size: 13px; color: #c99844; font-weight: bold; margin-top: 8px; }
+
+.up-card .card-play-btn { width: 100%; margin-top: auto; padding: 10px 0; font-size: 14px; }
+
+/* 空状态提示 */
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 20px;
+    color: #a0815c;
+    font-size: 18px;
     font-weight: bold;
-    margin-top: 10px;
+    background: rgba(255, 255, 255, 0.4);
+    border: 2px dashed var(--card-border);
+    border-radius: 12px;
 }
 
-.up-card .card-play-btn {
-    width: 100%;
+/* 底部免责声明 */
+footer {
+    text-align: center;
+    padding: 30px 20px;
+    border-top: 1px dashed var(--card-border);
+    background: rgba(246, 235, 215, 0.6);
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.8;
     margin-top: auto;
+    z-index: 5;
+}
+footer strong { color: var(--text-main); }
+
+/* =========================================================================
+   🚨 手机端专属样式适配 (屏幕宽度 < 768px)
+   ========================================================================= */
+@media (max-width: 768px) {
+    #app { padding: 0 15px 30px; }
+    .page-title { font-size: 32px; letter-spacing: 2px; padding-top: 10px; }
+    .page-title-wrapper::before { width: 90%; height: 70px; }
+    .page-subtitle { font-size: 14px; }
+    .breadcrumbs { font-size: 14px; padding: 15px 0; }
+    .breadcrumbs a.active { font-size: 18px; }
+
+    .category-layout { flex-direction: column; gap: 15px; }
+    .sidebar { width: 100%; border: none; box-shadow: none; background: transparent; }
+    .sidebar-title { display: none; }
+    .sidebar ul { display: flex; overflow-x: auto; white-space: nowrap; padding: 0 0 10px 0; gap: 10px; scrollbar-width: none; }
+    .sidebar ul::-webkit-scrollbar { display: none; }
+    .sidebar li { margin: 0; padding: 8px 16px; font-size: 14px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; }
+    .sidebar li.active { padding: 8px 16px; border-color: var(--primary-gold-dark); }
+    
+    /* 手机端双列 */
+    .game-grid, .ranking-container { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    
+    .game-card { padding: 12px 10px; }
+    .game-card-title { font-size: 16px; margin-bottom: 10px; padding-bottom: 8px; }
+    .game-image-container { margin-bottom: 10px; padding: 3px; }
+    
+    .game-tags { gap: 5px; margin-bottom: 10px; }
+    .tag { font-size: 10px; padding: 2px 6px; }
+    
+    .card-info { font-size: 11px; padding: 8px; margin-bottom: 15px; gap: 6px; }
+    .author-desc { -webkit-line-clamp: 1; font-size: 11px; }
+    .platform-tag { font-size: 9px; padding: 1px 4px; }
+    .meme-hashtag { font-size: 10px; padding: 2px 6px; }
+    .meme-box { margin-top: 2px; }
+    
+    .card-play-btn { font-size: 13px; padding: 8px 0; width: 100%; }
+    .card-no { font-size: 10px; right: 15px; top: 12px; }
+    .new-badge { font-size: 10px; padding: 4px 8px; top: -8px; left: -8px; border-width: 1px; }
+    .rank-number { font-size: 28px; top: -8px; left: -8px; }
+    
+    .up-grid { grid-template-columns: 1fr; gap: 15px; }
+    .up-card { padding: 15px; }
+    .up-avatar { width: 60px; height: 60px; font-size: 24px; border-width: 2px; }
+    .up-name { font-size: 16px; margin-bottom: 4px; }
+    .up-desc { font-size: 12px; }
+    .up-stat { font-size: 12px; margin-top: 6px; }
+    
+    footer { padding: 20px 15px; font-size: 12px; }
 }
 
+/* 滚动条美化 (PC端) */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #d8bc98; border-radius: 10px; }
