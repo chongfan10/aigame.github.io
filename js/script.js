@@ -64,7 +64,49 @@ const gamesData = [
         authorInfo: '弥留之国的爱丽丝中的游戏，方块K:美人投票',
         version: 'v1',
         memeEvent: ['方块K:美人投票', '弥留之国的爱丽丝']
-    }
+    },
+    {
+        id: 'game4', title: '大A模拟器', category: '抽象整活', isNew: true, isUpdated: false,
+        tags: [{ text: '经营' }, { text: '益智' }],
+        imgUrl: 'images/games/game4.webp', 
+        url: 'https://www.bilibili.com/toy/suoha/index.html',
+        author: '-会飞的蝈蝈-',
+        // ✅ 修复了这里多余的单引号
+        authorUrl: 'https://space.bilibili.com/443211651?spm_id_from=333.788.upinfo.detail.click',
+        authorAvatar: 'images/authors/avatar1.webp',
+        authorPlatform: 'B站',
+        authorInfo: '在这里天才只是门槛',
+        version: 'v1',
+        memeEvent: ['赛博炒股', 'A股模拟器']
+    },
+    {
+        id: 'game5', title: '气动逃逸', category: '社会热点', isNew: true, isUpdated: false,
+        tags: [{ text: '模拟' }, { text: '休闲' }],
+        imgUrl: 'images/games/game5.webp', 
+        url: ' https://roadster-game-d4gk0fp9k5bde5fd2-1508914020.tcloudbaseapp.com/roadster-game/',
+        author: '',
+        // ✅ 修复了这里多余的单引号
+        authorUrl: '',
+        authorAvatar: '',
+        authorPlatform: '',
+        authorInfo: '地面太拥挤，那就飞过去',
+        version: 'v1',
+        memeEvent: ['特斯拉', '尊界 V800']
+    },
+    {
+        id: 'game6', title: '别踩断', category: '社会热点', isNew: true, isUpdated: false,
+        tags: [{ text: '模拟' }, { text: '休闲' }],
+        imgUrl: 'images/games/game6.webp', 
+        url: 'https://bie-cai-duan.pages.dev',
+        author: '坷拉先生',
+        // ✅ 修复了这里多余的单引号
+        authorUrl: 'https://space.bilibili.com/103886?spm_id_from=333.788.upinfo.detail.click',
+        authorAvatar: 'images/authors/avatar2.webp',
+        authorPlatform: 'B站',
+        authorInfo: '踩轻了撞车  踩重了断踏板',
+        version: 'v1',
+        memeEvent: ['踏板断裂', '尊界']
+    },
 ];
 
 let currentRankingCategory = '全部热梗';
@@ -130,7 +172,7 @@ function createCardHTML(game, isRanking = false, rankNum = '', displayIndex = 1)
                     <span>${authorHTML}</span> ${platformTag}
                 </div>
                 <div class="info-row" style="flex-direction: column;">
-                    <span class="info-label">💬 作者信息：</span>
+                    <span class="info-label">💬 游戏信息：</span>
                     <span class="author-desc">${game.authorInfo || '该执笔人很神秘，未留下任何档案...'}</span>
                 </div>
                 <div class="info-row">
